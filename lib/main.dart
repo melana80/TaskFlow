@@ -26,7 +26,101 @@ class TaskFlowApp extends StatelessWidget {
           bodyMedium: TextStyle(color: Color(0xFF69708A)),
         ),
       ),
-      home: const WelcomeScreen(),
+      home: const TaskListScreen(),
+    );
+  }
+}
+
+class Task {
+  const Task({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.priority,
+    required this.isCompleted,
+  });
+
+  final int id;
+  final String title;
+  final String description;
+  final String priority;
+  final bool isCompleted;
+}
+
+const demoTasks = [
+  Task(
+    id: 1,
+    title: 'Crear el modelo de tareas',
+    description: 'Definir los datos de cada tarea de TaskFlow',
+    priority: 'Alta',
+    isCompleted: false,
+  ),
+  Task(
+    id: 2,
+    title: 'Construir la tarjeta de tarea',
+    description: 'Mostrar título, prioridad, descripción y estado',
+    priority: 'Media',
+    isCompleted: false,
+  ),
+  Task(
+    id: 3,
+    title: 'Implementar la lista desplazable',
+    description: 'Renderizar las tareas con ListView.builder',
+    priority: 'Alta',
+    isCompleted: true,
+  ),
+  Task(
+    id: 4,
+    title: 'Validar el contador de tareas',
+    description: 'Evitar pendientes negativos y limitar la meta diaria',
+    priority: 'Alta',
+    isCompleted: false,
+  ),
+  Task(
+    id: 5,
+    title: 'Capturar evidencia del avance',
+    description: 'Documentar la lista y una tarea completada',
+    priority: 'Baja',
+    isCompleted: false,
+  ),
+];
+
+class TaskCard extends StatelessWidget {
+  const TaskCard({super.key, required this.task});
+
+  final Task task;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        leading: Icon(
+          task.isCompleted ? Icons.check_circle : Icons.radio_button_unchecked,
+          color: task.isCompleted ? Colors.green : null,
+        ),
+        title: Text(task.title),
+        subtitle: Text('${task.priority} · ${task.description}'),
+        trailing: const Icon(Icons.chevron_right),
+      ),
+    );
+  }
+}
+
+class TaskListScreen extends StatelessWidget {
+  const TaskListScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Mis tareas')),
+      body: ListView.builder(
+        padding: const EdgeInsets.all(16),
+        itemCount: demoTasks.length,
+        itemBuilder: (context, index) {
+          final task = demoTasks[index];
+          return TaskCard(task: task);
+        },
+      ),
     );
   }
 }
