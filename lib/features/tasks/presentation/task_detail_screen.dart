@@ -28,9 +28,7 @@ class TaskDetailScreen extends StatelessWidget {
                 const SizedBox(height: 16),
                 Text('Prioridad: ${task.priority}'),
                 Text(
-                  task.isCompleted
-                      ? 'Estado: completada'
-                      : 'Estado: pendiente',
+                  task.isCompleted ? 'Estado: completada' : 'Estado: pendiente',
                 ),
                 Text('Usuario: ${task.userId}'),
                 const SizedBox(height: 24),
