@@ -7,8 +7,10 @@ prioridad y consultar su avance.
 
 Melani, estudiante universitaria que necesita reunir sus pendientes de clase y
 proyecto en una lista, priorizarlos y revisar el detalle de cada actividad.
-Los datos actuales son locales y de demostración; todavía no se conectan a un
-servicio web.
+La lista se carga desde JSONPlaceholder; la API no entrega descripción ni
+prioridad y sus títulos son texto de ejemplo en inglés. Para los 20 identificadores
+de `userId: 1`, la aplicación agrega títulos, descripciones y prioridades en
+español; conserva del servicio remoto el identificador, el usuario y el estado.
 
 ## Historias de usuario
 
@@ -102,10 +104,37 @@ arbitrario enviado por el cliente.
 
 ## Evidencia
 
-Guardar las capturas de la lista y el detalle con los datos personalizados en:
+Las capturas de la lista y el detalle se guardan en:
 
 - `evidence/taskflow-list.png`
 - `evidence/taskflow-detail.png`
+
+Los estados de carga terminada, vacío y error se capturan con pruebas de
+widgets en:
+
+- `evidence/taskflow-list-async.png`
+- `evidence/taskflow-empty-async.png`
+- `evidence/taskflow-error-async.png`
+
+La aplicación de producción conserva el repositorio remoto. Para reproducir
+los estados sin depender de la disponibilidad del servicio, la prueba
+`test/task_list_states_test.dart` usa un repositorio controlado:
+
+- **Carga:** mantiene pendiente la respuesta de prueba y comprueba el indicador
+  sin añadir demoras artificiales al código de producción.
+- **Lista:** el repositorio de prueba devuelve tres tareas.
+- **Detalle:** selecciona una tarea con datos remotos y verifica que el título
+  y la ruta conservan su id.
+- **Vacío:** devuelve una lista vacía.
+- **Error:** falla la primera carga con una excepción simulada. La prueba toma
+  la captura del mensaje y pulsa **Reintentar**; la segunda llamada devuelve
+  las tareas. Comprueba que la lista aparece y que la misma aplicación sigue
+  montada, sin reiniciarla.
+
+Para regenerar las capturas, ejecuta
+`flutter test --update-goldens test/task_list_states_test.dart`. Para comprobar
+el comportamiento sin reemplazar capturas, ejecuta
+`flutter test test/task_list_states_test.dart`.
 
 ## Ejecutar y validar
 
