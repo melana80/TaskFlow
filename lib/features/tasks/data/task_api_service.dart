@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
 import '../domain/task.dart';
+import 'task_api_task_mapper.dart';
 
 class TaskApiService {
   static const int userId = 1;
@@ -31,7 +32,7 @@ class TaskApiService {
 
     return rows.map((row) {
       final json = Map<String, dynamic>.from(row as Map);
-      return Task.fromJson(json);
+      return TaskApiTaskMapper.fromJson(json);
     }).toList();
   }
 }
